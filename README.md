@@ -1,3 +1,4 @@
 # normaliz-notebook
 
-[WIP] [Hilbert basis display](https://github.com/JustinShenk/normaliz-notebook/blob/master/interact.ipynb)
+## Tutorials
+[WIP] [Hilbert basis calculation](https://github.com/JustinShenk/normaliz-notebook/blob/master/interact.ipynb)
