@@ -5,7 +5,7 @@ Normaliz is a tool for computing the Hilbert bases and enumerative data of ratio
 
 ### Example 1: A cone in dimension 2
 
-We want to investigate the cone $C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subset\mathbb{R}^2$:
+We want to investigate the cone ![gif](/interact_files/CodeCogsEqn.gif):
 
 This cone is defined in the input file 2cone.in:
 
