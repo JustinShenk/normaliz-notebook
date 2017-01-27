@@ -1,12 +1,9 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
 <head>
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-<!doctype html>
-<meta charset="utf-8">
-<style>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <style>
 body {
   margin: 0;
   font-family: sans-serif;
@@ -47,9 +44,68 @@ g line {
     </marker>
   </defs>
 </svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
-"use strict";
+
+    <title>flask+d3 Hello World</title>
+
+    <script src="http://d3js.org/d3.v2.js"></script>
+    
+    <style>
+
+path.line {
+    fill: none;
+    stroke: #666;
+    stroke-width: 1.5px;
+}
+
+.domain {
+    stroke-width: 1px;
+}
+
+circle {
+    cursor: pointer;
+}
+
+.axis {
+    shape-rendering: crispEdges;
+}
+
+.axis line, .axis path {
+    stroke-width: 1px;
+    stroke: #000;
+    fill: none;
+}
+
+.tooltip {
+    display: none;
+}
+
+.tooltip.active {
+    display: block;
+}
+
+.tooltip rect {
+    fill: #ff0000;
+}
+
+    </style>
+
+</head>
+<body>
+
+    <h1>Hello World using d3.js &amp; Flask</h1>
+
+    <div id="info">
+        <div id="point-info">
+            Click on a point.
+        </div>
+    </div>
+
+    <div id="plot">
+    </div>
+
+    <script>
+
+        "use strict";
 
   var width = 400,
       height = 400;
@@ -184,20 +240,9 @@ g line {
         .text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")
   }
   update();
+        // d3.json("/data", update);
 
+    </script>
 
-</script>
-
-	<title>Normaliz - Hilbert Basis Visualization</title>
-</head>
-<body>
-<div class="container">
-<form>
-X Vector:<br>
-  <input type="number" name="xVector" value="4">
-Y Vector:<br>
-  <input type="number" name="yVector" value="2">
-</form>
-</div>
 </body>
 </html>
