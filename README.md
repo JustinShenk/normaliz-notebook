@@ -1,3 +1,9 @@
+# PyNormaliz Web
+
+Run `api.py`. It will start a web server listening at `localhost:8090`. Requests are expected to `localhost:8091/normaliz/:v1/:v2` where `v1` and `v2` are each comma seperated tuples of the vector's respective x and y values. E.g. `localhost:8091/normaliz/1.4,1.0/2,3`.
+
+For local development you will also want to run `web.py` which serves the web app at `localhost:8091`.
+
 
 ## PyNormaliz
 
