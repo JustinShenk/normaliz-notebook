@@ -1,4 +1,4 @@
-#! /usr/bin/env python3
+#! /usr/bin/env python2
 import json
 from flask import Flask, request, abort, redirect
 from flask_cors import CORS
