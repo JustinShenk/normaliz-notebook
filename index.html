@@ -1,211 +1,264 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<script src="https://d3js.org/d3.v4.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css"/>
-<!doctype html>
-<meta charset="utf-8">
-<style>
-body {
-  margin: 0;
-  font-family: sans-serif;
-  font-size: 12px;
-}
-svg > g > line {
-  stroke: #ddd;
-  shape-rendering: crispEdges;
-}
-svg  text {
-  text-anchor: middle;
-}
-g line {
-  stroke: black;
-}
-.compare line {
-  stroke-dashArray: 2, 4;
-}
-.handle circle {
-  fill: yellow;
-  fill-opacity: 0.8;
-  stroke: black;
-  stroke-opacity: 0.15;
-}
-
-.handle text {
-  fill: grey;
-  text-anchor: middle;
-}
-.difference {
-  fill-opacity: 0.4;
-}
-</style>
-<svg>
-  <defs>
-    <marker id="arrowhead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto">
-      <path d="M0,0L10,5L0,10z" />
-    </marker>
-  </defs>
-</svg>
-<script src="https://d3js.org/d3.v4.min.js"></script>
-<script>
-"use strict";
-
-  var width = 400,
-      height = 400;
-
-  var svg = d3.select("svg")
-      .attr("width", width)
-      .attr("height", height)
-    .append("g")
-      .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
-
-  var drag = d3.drag()
-      .on("drag", function(d) { d.x = d3.event.x; d.y = d3.event.y; update(); });
-
-  var arc = d3.arc()
-      .cornerRadius(4);
-
-  var format = d3.format(".2f")
-
-  // Origin
-  svg.append("line")
-      .attr("y1", -height / 2)
-      .attr("y2", height / 8);
-
-  svg.append("line")
-      .attr("x1", -width / 12)
-      .attr("x2", width / 2)
-
-  svg.append("circle")
-      .attr("r", 4);
-
-  // Add Normaliz lattice in first quadrant.
-  for (var i = 0; i < 20; i++) {
-    for (var j = 0; j < 20; j++) {
-      svg.append("circle")
-        .attr("r", 1).attr("cx",i * 15).attr("cy", j * -15);
+    <script src="https://d3js.org/d3.v4.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="script.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+    <!doctype html>
+    <meta charset="utf-8">
+    <style>
+    body {
+        padding: 30px;
+        margin: 0;
+        font-family: sans-serif;
+        font-size: 12px;
     }
-  };
+    
+    svg > g > line {
+        stroke: #ddd;
+        shape-rendering: crispEdges;
+    }
+    
+    svg text {
+        text-anchor: middle;
+    }
+    
+    g line {
+        stroke: black;
+    }
+    
+    .compare line {
+        stroke-dashArray: 2, 4;
+    }
+    
+    .handle circle {
+        fill: yellow;
+        fill-opacity: 0.8;
+        stroke: black;
+        stroke-opacity: 0.15;
+    }
+    
+    .handle text {
+        fill: grey;
+        text-anchor: middle;
+    }
+    
+    .difference {
+        fill-opacity: 0.4;
+    }
+    </style>
+    <svg>
+        <defs>
+            <marker id="arrowhead" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                <path d="M0,0L10,5L0,10z" />
+            </marker>
+        </defs>
+        <text x="250" y="10">Hilbert Basis</text>
+    </svg>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script>
+    "use strict";
 
-  // Difference
-  var differenceArc = svg.append("g")
-      .datum({});
+    var scaleFactor = 20;
 
-  var differencePath = differenceArc.append("path")
-      .attr("class", "difference");
+    var width = 400,
+        height = 220;
 
-  var differenceText = differenceArc.append("text");
+    var svg = d3.select("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(" + (2 * height / 3) + "," + (4 * height / 5) + ")");
 
-  // Source vector
-  var sourceVector = svg.append("g")
-      .attr("class", "source")
-      .datum({x: 40, y: -120});
+    var drag = d3.drag()
+        .on("drag", function(d) {
+            d.x = d3.event.x;
+            d.y = d3.event.y;
+            update();
+        })
+        .on("end", function(r) {
+            var newX = Math.round(d3.event.x / 20) * 20;
+            var newY = Math.round(d3.event.y / 20) * 20;
+            r.x = newX < 11 * scaleFactor ? newX : 11 * scaleFactor;
+            r.y = newY < 8 * scaleFactor ? newY : 8 * scaleFactor;
+            var source = JSON.stringify(d3.select('.source'));
+            // TODO: Use comparison operator to see if `r` corresponds to source or compare vector, then update the appropriate input field.
+            console.log(source);
+            $("#sourceVector").val(String(r.x / 20) + ',' + String(-r.y / 20));
+            update();
+        });
 
-  var sourceHandle = sourceVector.append("g")
-      .attr("class", "handle")
-      .call(drag);
+    var arc = d3.arc()
+        .cornerRadius(4);
 
-  var sourceLine = sourceVector.append("line")
-      .attr("marker-end", "url(#arrowhead)");
+    var format = d3.format(".2f")
 
-  sourceHandle.append("circle")
-      .attr("r", 10);
+    // Origin
+    svg.append("line")
+        .attr("y1", -height)
+        .attr("y2", 20);
 
-  var sourceText = sourceHandle.append("text")
-      .attr("dy", -15);
+    svg.append("line")
+        .attr("x1", -20)
+        .attr("x2", width)
 
-  // Compare vector
-  var compareVector = svg.append("g")
-      .attr("class", "compare")
-      .datum({x: 120, y: -50});
+    svg.append("circle")
+        .attr("r", 4);
 
-  var compareHandle = compareVector.append("g")
-      .attr("class", "handle")
-      .call(drag);
+    // Draw background lattice in first quadrant.
+    var latticeDimensions = [12, 10];
+    for (var i = 0; i < latticeDimensions[0]; i++) {
+        for (var j = 0; j < latticeDimensions[1]; j++) {
+            svg.append("circle")
+                .attr("r", 1).attr("cx", i * scaleFactor).attr("cy", j * -scaleFactor);
+        }
+    };
 
-  var compareLine = compareVector.append("line")
-      .attr("marker-end", "url(#arrowhead)");
+    // Difference
+    var differenceArc = svg.append("g")
+        .datum({});
 
-  compareHandle.append("circle")
-      .attr("r", 10);
+    var differencePath = differenceArc.append("path")
+        .attr("class", "difference");
 
-  var compareText = compareHandle.append("text")
-      .attr("dy", -15);
+    var differenceText = differenceArc.append("text");
 
-  // Update
-  function update() {
-    var source = sourceVector.datum(),
-        compare = compareVector.datum();
+    // Source vector
+    var sourceVector = svg.append("g")
+        .attr("class", "source")
+        .datum({
+            x: 40,
+            y: -120
+        });
 
-    var sourceLength = Math.sqrt(source.x * source.x + source.y * source.y),
-        compareLength = Math.sqrt(compare.x * compare.x + compare.y * compare.y);
+    var sourceHandle = sourceVector.append("g")
+        .attr("class", "handle")
+        .call(drag);
 
-    // The math-y bits
-    var a2 = Math.atan2(source.y, source.x);
-    var a1 = Math.atan2(compare.y, compare.x);
-    var sign = a1 > a2 ? 1 : -1;
-    var angle = a1 - a2;
-    var K = -sign * Math.PI * 2;
-    var angle = (Math.abs(K + angle) < Math.abs(angle))? K + angle : angle;
+    var sourceLine = sourceVector.append("line")
+        .attr("marker-end", "url(#arrowhead)");
 
-    sourceLine
-        .attr("x2", (d) => d.x)
-        .attr("y2", (d) => d.y);
+    sourceHandle.append("circle")
+        .attr("r", 10);
 
-    sourceHandle
-        .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
+    var sourceText = sourceHandle.append("text")
+        .attr("dy", -15);
 
-    sourceText
-        .text(`${Math.round(source.x/20)}, ${Math.round(0-source.y/20)}`)
+    // Compare vector
+    var compareVector = svg.append("g")
+        .attr("class", "compare")
+        .datum({
+            x: 120,
+            y: -50
+        });
 
-    compareLine
-        .attr("x2", (d) => d.x)
-        .attr("y2", (d) => d.y);
+    var compareHandle = compareVector.append("g")
+        .attr("class", "handle")
+        .call(drag);
 
-    compareHandle
-        .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+    var compareLine = compareVector.append("line")
+        .attr("marker-end", "url(#arrowhead)");
 
-    compareText
-        .text(`${Math.round(compare.x/20)}, ${0-Math.round(compare.y/20)}`);
+    compareHandle.append("circle")
+        .attr("r", 10);
 
-    arc
-        .innerRadius(20)
-        .outerRadius(Math.max(30, Math.min(sourceLength, compareLength) * 0.9))
-        .startAngle(a2 + Math.PI / 2)
-        .endAngle(a2 + angle + Math.PI / 2);
+    var compareText = compareHandle.append("text")
+        .attr("dy", -15);
 
-    differencePath
-        .style("fill", angle > 0 ? "cyan" : "magenta")
-        .attr("d", arc());
+    // Update
+    function update() {
+        var source = sourceVector.datum(),
+            compare = compareVector.datum();
 
-    differenceText
-        .attr("transform", "translate(" + arc.centroid() + ")")
-        .text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")
+        var sourceLength = Math.sqrt(source.x * source.x + source.y * source.y),
+            compareLength = Math.sqrt(compare.x * compare.x + compare.y * compare.y);
 
-    var apibase = 'http://localhost:8090/normaliz'
-    var v1 = [source.x, source.y].join(',')
-    var v2 = [compare.x, compare.y].join(',')
-    d3.json([apibase, v1, v2].join('/'), function(r) {
-      // TODO: Visualize hilbert basis.
-      console.log(r);
-    });
-  }
-  update();
+        // The math-y bits
+        var a2 = Math.atan2(source.y, source.x);
+        var a1 = Math.atan2(compare.y, compare.x);
+        var sign = a1 > a2 ? 1 : -1;
+        var angle = a1 - a2;
+        var K = -sign * Math.PI * 2;
+        var angle = (Math.abs(K + angle) < Math.abs(angle)) ? K + angle : angle;
 
+        sourceLine
+            .attr("x2", (d) => d.x)
+            .attr("y2", (d) => d.y);
 
-</script>
+        sourceHandle
+            .attr("transform", (d) => `translate(${d.x}, ${d.y})`);
 
-	<title>Normaliz - Hilbert Basis Visualization</title>
+        sourceText
+            .text(`${Math.round(source.x/scaleFactor)}, ${Math.round(0-source.y/scaleFactor)}`)
+
+        compareLine
+            .attr("x2", (d) => d.x)
+            .attr("y2", (d) => d.y);
+
+        compareHandle
+            .attr("transform", (d) => `translate(${d.x}, ${d.y})`)
+
+        compareText
+            .text(`${Math.round(compare.x/scaleFactor)}, ${0-Math.round(compare.y/scaleFactor)}`);
+
+        arc
+            .innerRadius(20)
+            .outerRadius(Math.max(30, Math.min(sourceLength, compareLength) * 0.9))
+            .startAngle(a2 + Math.PI / 2)
+            .endAngle(a2 + angle + Math.PI / 2);
+
+        differencePath
+            .style("fill", angle > 0 ? "cyan" : "magenta")
+            .attr("d", arc());
+
+        differenceText
+            .attr("transform", "translate(" + arc.centroid() + ")")
+            .text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")
+
+        var apibase = 'http://localhost:8090/normaliz'
+        var v1 = [source.x, source.y].join(',')
+        var v2 = [compare.x, compare.y].join(',')
+        d3.json([apibase, v1, v2].join('/'), function(r) {
+            // TODO: Visualize hilbert basis.
+            console.log(r);
+        });
+    }
+    update();
+    </script>
+    <title>Normaliz - Hilbert Basis Visualization</title>
 </head>
+
 <body>
-<div class="container">
-<form>
-X Vector:<br>
-  <input type="number" name="xVector" value="4">
-Y Vector:<br>
-  <input type="number" name="yVector" value="2">
-</form>
-</div>
+    <div id="interact" class="container">
+        <div class="col-md-6 center">
+            <form id="inputVectors" method="GET">
+                Source Vector X:
+                <input id="sourceVector" name="sourceVector" value="6,2"> Compare Vector:
+                <input id="compareVector" name="compareVector" value="2,6">
+                <input type="button" value="Calculate" onclick="calculate()" />
+                <div>
+                    <h2>Hilbert basis</h2>
+                    <br/>
+                    <span id="output" />
+                </div>
+                <script>
+                function calculate() {
+                    var sourceEnc = escape($("#sourceVector").val());
+                    var compareEnc = escape($("#compareVector").val());
+                    var [sx, sy] = sourceEnc.split('%2C');
+                    var [cx, cy] = compareEnc.split('%2C');
+                    var vectorCombination = '[' + String(sx) + ', ' + String(sy) + '],[' + String(cx) + ', ' + String(cy) + ']';
+                    var output = JSON.stringify(hilbertBases[vectorCombination]);
+                    $("#output").html(output);
+                };
+                </script>
+            </form>
+        </div>
+    </div>
+    </div>
 </body>
+
 </html>
