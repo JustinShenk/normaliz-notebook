@@ -239,23 +239,12 @@
                 <input id="sourceVector" name="sourceVector" value="6,2"> Compare Vector:
                 <input id="compareVector" name="compareVector" value="2,6">
                 <input type="button" value="Calculate" onclick="calculate()" />
-                <div>
-                    <h2>Hilbert basis</h2>
-                    <br/>
-                    <span id="output" />
-                </div>
-                <script>
-                function calculate() {
-                    var sourceEnc = escape($("#sourceVector").val());
-                    var compareEnc = escape($("#compareVector").val());
-                    var [sx, sy] = sourceEnc.split('%2C');
-                    var [cx, cy] = compareEnc.split('%2C');
-                    var vectorCombination = '[' + String(sx) + ', ' + String(sy) + '],[' + String(cx) + ', ' + String(cy) + ']';
-                    var output = JSON.stringify(hilbertBases[vectorCombination]);
-                    $("#output").html(output);
-                };
-                </script>
             </form>
+            <div>
+                <h2>Hilbert basis</h2>
+                <br/>
+                <div id="output"></div>
+            </div>
         </div>
     </div>
     </div>
