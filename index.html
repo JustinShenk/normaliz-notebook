@@ -98,8 +98,8 @@
             update();
         })
         .on("end", function(r) {
-            var newX = Math.round(d3.event.x / 20) * 20;
-            var newY = Math.round(d3.event.y / 20) * 20;
+            var newX = Math.round(d3.event.x / scaleFactor) * scaleFactor;
+            var newY = Math.round(d3.event.y / scaleFactor) * scaleFactor;
             console.log(newY)
             r.x = newX < 9 * scaleFactor ? newX : 9 * scaleFactor;
             r.y = newY > -8 * scaleFactor ? newY : -8 * scaleFactor;
@@ -111,9 +111,9 @@
             var cx = compareVector.datum().x;
             var cy = compareVector.datum().y;
             if (sx == r.x && sy == r.y) {
-                $("#sourceInput").val(String(r.x / 20) + ',' + String(-r.y / 20));
+                $("#sourceInput").val(String(r.x / scaleFactor) + ',' + String(-r.y / scaleFactor));
             } else {
-                $("#compareInput").val(String(r.x / 20) + ',' + String(-r.y / 20));
+                $("#compareInput").val(String(r.x / scaleFactor) + ',' + String(-r.y / scaleFactor));
             }            
             update();
             calculate();
@@ -184,7 +184,7 @@
         .attr("class", "compare")
         .datum({
             x: 120,
-            y: -50
+            y: -40
         });
 
     var compareHandle = compareVector.append("g")
@@ -269,7 +269,7 @@
             <form id="inputVectors" method="GET">
                 Source Vector X:
                 <input id="sourceInput" name="sourceInput" value="2,6"> Compare Vector:
-                <input id="compareInput" name="compareInput" value="2,6">
+                <input id="compareInput" name="compareInput" value="6,2">
                 <input type="button" value="Calculate" onclick="calculate()" />
             </form>
             <div>

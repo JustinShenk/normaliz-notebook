@@ -19,6 +19,10 @@ function calculate() {
     console.log(vectorCombination)
     var output = JSON.stringify(hilbertBases[vectorCombination]);
     $("#output").html(output);
+    sourceVector.datum().x = sx * scaleFactor;
+    sourceVector.datum().y = -sy * scaleFactor;
+    compareVector.datum().x = cx * scaleFactor;
+    compareVector.datum().y = -cy * scaleFactor;
     drawHilbertBasis(hilbertBases[vectorCombination]);
 };
 
@@ -35,9 +39,8 @@ function drawHilbertBasis(basis) {
                 .attr("cx", element[0] * scaleFactor)
                 .attr("cy", element[1] * -scaleFactor);
         });
-        console.log(JSON.stringify(basis));
     } else {
-    	console.log("Error: Basis not loaded")
+        console.log("Error: Basis not loaded")
     }
     update();
 
