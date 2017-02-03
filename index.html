@@ -114,8 +114,9 @@
                 $("#sourceInput").val(String(r.x / 20) + ',' + String(-r.y / 20));
             } else {
                 $("#compareInput").val(String(r.x / 20) + ',' + String(-r.y / 20));
-            }
+            }            
             update();
+            calculate();
         });
 
     var basisCircles = svg.append("g")
