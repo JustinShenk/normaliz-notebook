@@ -11775,6 +11775,12 @@ div#notebook {
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
 <h1 id="Introducing-PyNormaliz">Introducing PyNormaliz<a class="anchor-link" href="#Introducing-PyNormaliz">&#182;</a></h1><p>(Winfried Bruns, Sebastian Gutsche, Justhin Shenk, Richard Sieg)</p>
+<p>This small tutorial introduces the main syntax of the Python interface PyNormaliz for Normaliz.</p>
+<p>To install PyNormaliz on your machine, download the PyNormaliz and run</p>
+<p><pre>
+python setup.py install
+</pre>
+If you are using python3 you might need to enter python3 instead of python.</p>
 
 </div>
 </div>
@@ -11784,26 +11790,45 @@ div#notebook {
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h2 id="Example-1:-A-cone-in-dimension-2">Example 1: A cone in dimension 2<a class="anchor-link" href="#Example-1:-A-cone-in-dimension-2">&#182;</a></h2><p>&lt;img src="images/2cone.png" width="250px",style="float: right;"&gt;
-We want to investigate the cone $C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subset\mathbb{R}^2$:</p>
+<h2 id="Example-1:-A-cone-in-dimension-2">Example 1: A cone in dimension 2<a class="anchor-link" href="#Example-1:-A-cone-in-dimension-2">&#182;</a></h2><p>&lt;img src="images/2cone.png" width="240px",style="float: right;"&gt;
+We want to investigate the cone $C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subset\mathbb{R}^2$.</p>
+<p>In the cone constructor of PyNormaliz, we specify the input type ("cone") and an input matrix for this input type.</p>
+<p>To compute its Hilbert basis we use the point operator and call HilbertBasis() on our cone.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="kn">import</span> <span class="nn">PyNormaliz</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">from</span> <span class="nn">PyNormaliz</span> <span class="k">import</span> <span class="o">*</span> <span class="c1"># or import PyNormaliz</span>
 
-<span class="n">generators</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">cone</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzCone</span><span class="p">(</span><span class="s2">&quot;cone&quot;</span><span class="p">,</span><span class="n">generators</span><span class="p">)</span>
-<span class="n">HB</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">cone</span><span class="p">,</span><span class="s2">&quot;HilbertBasis&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">HB</span><span class="p">)</span>
+<span class="n">gen</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">(</span><span class="n">cone</span><span class="o">=</span><span class="n">gen</span><span class="p">)</span>
+<span class="n">C</span><span class="o">.</span><span class="n">HilbertBasis</span><span class="p">()</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>[[1, 1], [1, 2], [1, 3], [2, 1]]</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -11813,25 +11838,42 @@ We want to investigate the cone $C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subse
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>We can also use inequalities:</p>
+<p>We can also use inequalities as an input. We also check that the extreme rays of the new cone are really the generators of the previous one.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">ineq</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">cone2</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzCone</span><span class="p">(</span><span class="s2">&quot;inequalities&quot;</span><span class="p">,</span><span class="n">ineq</span><span class="p">)</span>
-<span class="n">Gen</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">cone2</span><span class="p">,</span><span class="s2">&quot;ExtremeRays&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">Gen</span><span class="p">)</span>
-<span class="n">HB2</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">cone2</span><span class="p">,</span><span class="s2">&quot;HilbertBasis&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">HB2</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ineq</span> <span class="o">=</span> <span class="p">[[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">3</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">cone2</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">(</span><span class="n">inequalities</span><span class="o">=</span><span class="n">ineq</span><span class="p">)</span>
+<span class="n">gen2</span> <span class="o">=</span> <span class="n">cone2</span><span class="o">.</span><span class="n">ExtremeRays</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">gen</span><span class="o">==</span><span class="n">gen2</span><span class="p">)</span>
+<span class="n">HB2</span> <span class="o">=</span> <span class="n">cone2</span><span class="o">.</span><span class="n">HilbertBasis</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">HB2</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>True
+[[1, 1], [1, 2], [1, 3], [2, 1]]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11841,9 +11883,11 @@ We want to investigate the cone $C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subse
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Example-2:-A-lattice-polytope">Example 2: A lattice polytope<a class="anchor-link" href="#Example-2:-A-lattice-polytope">&#182;</a></h1><p>&lt;img src="images/lattice_simplex.png" width="350px",style="float: right;"&gt;
-Now we investigate a lattice simplex (not normal/integrally closed)</p>
-<p>Hilbert series: $H(t)=\frac{1+14t+14t^2}{(1-t)^4}$</p>
+<h1 id="Example-2:-A-lattice-polytope">Example 2: A lattice polytope<a class="anchor-link" href="#Example-2:-A-lattice-polytope">&#182;</a></h1><p>&lt;img src="images/lattice_simplex.png" width="300px",style="float: right;"&gt;
+Now we investigate a lattice simplex, which is not normal/integrally closed.</p>
+<p>The inpute type is "polytope". Note that we do not need a homogenizing variable but really specify the points in their actual dimension.</p>
+<p>We compute its Hilbert series and Ehrhart polynomial, which are:</p>
+<p>Hilbert series: $H(t)=\frac{1+14t+15t^2}{(1-t)^4}$</p>
 <p>Ehrhart polynomial: $p(k)=1+4k+8k^2+5k^3$</p>
 
 </div>
@@ -11851,20 +11895,38 @@ Now we investigate a lattice simplex (not normal/integrally closed)</p>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]]</span>
-<span class="n">poly</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzCone</span><span class="p">(</span><span class="s2">&quot;polytope&quot;</span><span class="p">,</span><span class="n">vertices</span><span class="p">)</span>
-<span class="n">HB</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="s2">&quot;HilbertBasis&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">HB</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="s2">&quot;IsDeg1HilbertBasis&quot;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="s2">&quot;HilbertSeries&quot;</span><span class="p">))</span> 
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="s2">&quot;HilbertQuasiPolynomial&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">vertices</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">0</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">5</span><span class="p">]]</span>
+<span class="n">poly</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">(</span><span class="n">polytope</span><span class="o">=</span><span class="n">vertices</span><span class="p">)</span>
+<span class="n">HB</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">HilbertBasis</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">HB</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">IsDeg1HilbertBasis</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">HilbertSeries</span><span class="p">())</span> 
+<span class="nb">print</span><span class="p">(</span><span class="n">poly</span><span class="o">.</span><span class="n">HilbertQuasiPolynomial</span><span class="p">())</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>19
+False
+[[1, 14, 15], [1, 1, 1, 1], 0]
+[[1, 4, 8, 5], 1]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11874,22 +11936,39 @@ Now we investigate a lattice simplex (not normal/integrally closed)</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>Only interested in the lattice points?</p>
+<p>If we are only interested in the lattic points, we compute them via the command Deg1Elements. Note that the output now has the homogenizing variable as last coordinate.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">LP</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">poly</span><span class="p">,</span><span class="s2">&quot;Deg1Elements&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">LP</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">LP</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">LP</span> <span class="o">=</span> <span class="n">poly</span><span class="o">.</span><span class="n">Deg1Elements</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">LP</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">LP</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>18
+[[0, 0, 0, 1], [0, 0, 1, 1], [0, 0, 2, 1], [0, 0, 3, 1], [0, 0, 4, 1], [0, 0, 5, 1], [0, 1, 0, 1], [0, 1, 1, 1], [0, 1, 2, 1], [0, 1, 3, 1], [0, 2, 0, 1], [0, 2, 1, 1], [0, 3, 0, 1], [1, 0, 0, 1], [1, 0, 1, 1], [1, 0, 2, 1], [1, 1, 0, 1], [2, 0, 0, 1]]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11899,25 +11978,43 @@ Now we investigate a lattice simplex (not normal/integrally closed)</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<h1 id="Example-3:-A-rational-polytope">Example 3: A rational polytope<a class="anchor-link" href="#Example-3:-A-rational-polytope">&#182;</a></h1><p>&lt;img src="images/rat_poly.png" width="300px",style="float: right;"&gt;
-We construct a polytope with vertices $(5/2,3/2),(-2/3,-4/3),(1/4,-7/4)$</p>
+<h1 id="Example-3:-A-rational-polytope">Example 3: A rational polytope<a class="anchor-link" href="#Example-3:-A-rational-polytope">&#182;</a></h1><p>&lt;img src="images/rat_poly.png" width="290px",style="float: right;"&gt;
+We construct a polytope with vertices $(5/2,3/2),(-2/3,-4/3),(1/4,-7/4)$.</p>
+<p>This is the first time we enter two different and compatible input types into the constructor. With the grading we declare the last coordinate to be the denominator of the vertices.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">rat_vert</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span>
-<span class="n">grad</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
-<span class="n">rat_poly</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzCone</span><span class="p">(</span><span class="s2">&quot;cone&quot;</span><span class="p">,</span><span class="n">rat_vert</span><span class="p">,</span><span class="s2">&quot;grading&quot;</span><span class="p">,</span><span class="n">grad</span><span class="p">)</span>
-<span class="n">HS</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">rat_poly</span><span class="p">,</span><span class="s2">&quot;HilbertSeries&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">HS</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">rat_vert</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">5</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="o">-</span><span class="mi">7</span><span class="p">,</span><span class="mi">4</span><span class="p">]]</span>
+<span class="n">g</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">]]</span>
+<span class="n">rat_poly</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">(</span><span class="n">cone</span><span class="o">=</span><span class="n">rat_vert</span><span class="p">,</span><span class="n">grading</span><span class="o">=</span><span class="n">g</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rat_poly</span><span class="o">.</span><span class="n">HilbertSeries</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">rat_poly</span><span class="o">.</span><span class="n">HilbertQuasiPolynomial</span><span class="p">())</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[1, 1, 4, 4, 5, 2, 4, 6, 3, 2, 6, 4, 2, 3], [1, 1, 12], 0]
+[[24, 6, 47], [19, 6, 47], [16, 6, 47], [15, 6, 47], [40, 6, 47], [19, 6, 47], [0, 6, 47], [31, 6, 47], [40, 6, 47], [3, 6, 47], [16, 6, 47], [31, 6, 47], 24]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11927,23 +12024,40 @@ We construct a polytope with vertices $(5/2,3/2),(-2/3,-4/3),(1/4,-7/4)$</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>&lt;img src="images/rat_poly_it.png" width="300px",style="float: right;"&gt;
-Compute its integer hull:</p>
+<p>&lt;img src="images/rat_poly_it.png" width="290px",style="float: right;"&gt;
+We compute the integer hull of this polytope which is again a cone object and thus we can access its vertices of support hyperplanes.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">int_hull</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">rat_poly</span><span class="p">,</span><span class="s2">&quot;IntegerHull&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">int_hull</span><span class="p">,</span><span class="s2">&quot;VerticesOfPolyhedron&quot;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">int_hull</span><span class="p">,</span><span class="s2">&quot;SupportHyperplanes&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">int_hull</span> <span class="o">=</span> <span class="n">rat_poly</span><span class="o">.</span><span class="n">IntegerHull</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">int_hull</span><span class="o">.</span><span class="n">VerticesOfPolyhedron</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">int_hull</span><span class="o">.</span><span class="n">SupportHyperplanes</span><span class="p">())</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[0, -1, 1], [2, 1, 1]]
+[[1, -2, 0], [1, 0, 0]]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11960,28 +12074,48 @@ Compute its integer hull:</p>
 2x_2 &amp;\leq 3 \
 -2x_1+2x_2&amp;\leq 3 
 \end{align</em>}</p>
+<p>The input type is "inhom_inequalities" where a row $(a_1,\ldots,a_n,b)$ in the input matrix defines the inequality</p>
+\begin{equation*}a_1x_1 +\dots+a_nx_n+b\geq0.\end{equation*}<p>In this case, HilbertBasis() returns the Hilbert basis of the recession cone associated to the polyhedron.</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">ineq2</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>
-<span class="n">polyhedron</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzCone</span><span class="p">(</span><span class="s2">&quot;inhom_inequalities&quot;</span><span class="p">,</span><span class="n">ineq2</span><span class="p">)</span>
-<span class="n">HB_rec</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">,</span><span class="s2">&quot;HilbertBasis&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">HB_rec</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">module_gen</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">,</span><span class="s2">&quot;ModuleGenerators&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">module_gen</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
-<span class="n">vert_poly</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">polyhedron</span><span class="p">,</span><span class="s2">&quot;VerticesOfPolyhedron&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">vert_poly</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">ineq2</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">],[</span><span class="mi">2</span><span class="p">,</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]]</span>
+<span class="n">polyhedron</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">(</span><span class="n">inhom_inequalities</span><span class="o">=</span><span class="n">ineq2</span><span class="p">)</span>
+<span class="n">HB_rec</span> <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">HilbertBasis</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">HB_rec</span><span class="p">)</span>
+
+<span class="n">module_gen</span> <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">ModuleGenerators</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">module_gen</span><span class="p">)</span>
+
+<span class="n">vert_poly</span> <span class="o">=</span> <span class="n">polyhedron</span><span class="o">.</span><span class="n">VerticesOfPolyhedron</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">vert_poly</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[1, 0, 0]]
+[[-1, 0, 1], [0, 1, 1]]
+[[-4, -1, 2], [0, 3, 2]]
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -11991,22 +12125,52 @@ Compute its integer hull:</p>
 </div>
 <div class="inner_cell">
 <div class="text_cell_render border-box-sizing rendered_html">
-<p>...or by generators
-&lt;img src="images/polyhedron_int_hull.png" width="350px",style="float: right;"&gt;</p>
+<p>We can also define the polyhedron via its generators, i.e. its vertices and generators of its recession cone.
+&lt;img src="images/polyhedron_int_hull.png" width="380px",style="float: right;"&gt;</p>
 
 </div>
 </div>
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">poly2</span> <span class="o">=</span> <span class="n">Cone</span><span class="p">(</span><span class="n">vertices</span><span class="o">=</span><span class="n">vert_poly</span><span class="p">,</span><span class="n">cone</span><span class="o">=</span><span class="p">[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">int_hull2</span> <span class="o">=</span> <span class="n">poly2</span><span class="o">.</span><span class="n">IntegerHull</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">int_hull2</span><span class="o">.</span><span class="n">VerticesOfPolyhedron</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">int_hull2</span><span class="o">.</span><span class="n">ExtremeRays</span><span class="p">())</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+<div class="prompt"></div>
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[[-1, 0, 1], [0, 1, 1]]
+[[1, 0, 0]]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
 <div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython2"><pre><span></span><span class="n">poly2</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzCone</span><span class="p">(</span><span class="s2">&quot;vertices&quot;</span><span class="p">,</span><span class="n">vert_poly</span><span class="p">,</span><span class="s2">&quot;cone&quot;</span><span class="p">,[[</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">]])</span>
-
-<span class="n">int_hull2</span> <span class="o">=</span> <span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">poly2</span><span class="p">,</span><span class="s2">&quot;IntegerHull&quot;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">int_hull2</span><span class="p">,</span><span class="s2">&quot;VerticesOfPolyhedron&quot;</span><span class="p">))</span>
-<span class="k">print</span><span class="p">(</span><span class="n">PyNormaliz</span><span class="o">.</span><span class="n">NmzResult</span><span class="p">(</span><span class="n">int_hull2</span><span class="p">,</span><span class="s2">&quot;ExtremeRays&quot;</span><span class="p">))</span>
+<div class=" highlight hl-ipython3"><pre><span></span> 
 </pre></div>
 
 </div>

@@ -280,40 +280,53 @@
 
 (Winfried Bruns, Sebastian Gutsche, Justhin Shenk, Richard Sieg)
 
+This small tutorial introduces the main syntax of the Python interface
+PyNormaliz for Normaliz.
+
+To install PyNormaliz on your machine, download the PyNormaliz and run
+
+If you are using python3 you might need to enter python3 instead of
+python.
+
     \subsection{Example 1: A cone in dimension
 2}\label{example-1-a-cone-in-dimension-2}
 
 \textless{}img src="images/2cone.png" width="240px",style="float:
 right;"\textgreater{} We want to investigate the cone
-\(C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subset\mathbb{R}^2\):
+\(C=\mathbb{R}_{+}(2,1)+\mathbb{R}_{+}(1,3)\subset\mathbb{R}^2\).
+
+In the cone constructor of PyNormaliz, we specify the input type
+("cone") and an input matrix for this input type.
+
+To compute its Hilbert basis we use the point operator and call
+HilbertBasis() on our cone.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{import} \PY{n+nn}{PyNormaliz}
+{\color{incolor}In [{\color{incolor}10}]:} \PY{k+kn}{from} \PY{n+nn}{PyNormaliz} \PY{k}{import} \PY{o}{*} \PY{c+c1}{\PYZsh{} or import PyNormaliz}
+         
+         \PY{n}{gen} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+         \PY{n}{C} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{cone}\PY{o}{=}\PY{n}{gen}\PY{p}{)}
+         \PY{n}{C}\PY{o}{.}\PY{n}{HilbertBasis}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+
+            \begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}10}]:} [[1, 1], [1, 2], [1, 3], [2, 1]]
+\end{Verbatim}
         
-        \PY{n}{generators} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
-        \PY{n}{cone} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzCone}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cone}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{generators}\PY{p}{)}
-        \PY{n}{HB} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{cone}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertBasis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{HB}\PY{p}{)}
+    We can also use inequalities as an input. We also check that the extreme
+rays of the new cone are really the generators of the previous one.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}11}]:} \PY{n}{ineq} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+         \PY{n}{cone2} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{inequalities}\PY{o}{=}\PY{n}{ineq}\PY{p}{)}
+         \PY{n}{gen2} \PY{o}{=} \PY{n}{cone2}\PY{o}{.}\PY{n}{ExtremeRays}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{gen}\PY{o}{==}\PY{n}{gen2}\PY{p}{)}
+         \PY{n}{HB2} \PY{o}{=} \PY{n}{cone2}\PY{o}{.}\PY{n}{HilbertBasis}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{HB2}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-[[1, 1], [1, 2], [1, 3], [2, 1]]
-
-    \end{Verbatim}
-
-    We can also use inequalities:
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}2}]:} \PY{n}{ineq} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
-        \PY{n}{cone2} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzCone}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inequalities}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{ineq}\PY{p}{)}
-        \PY{n}{Gen} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{cone2}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ExtremeRays}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{Gen}\PY{p}{)}
-        \PY{n}{HB2} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{cone2}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertBasis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{HB2}\PY{p}{)}
-\end{Verbatim}
-
-    \begin{Verbatim}[commandchars=\\\{\}]
-[[1, 3], [2, 1]]
+True
 [[1, 1], [1, 2], [1, 3], [2, 1]]
 
     \end{Verbatim}
@@ -323,7 +336,12 @@ polytope}\label{example-2-a-lattice-polytope}
 
 \textless{}img src="images/lattice\_simplex.png"
 width="300px",style="float: right;"\textgreater{} Now we investigate a
-lattice simplex (not normal/integrally closed)
+lattice simplex, which is not normal/integrally closed.
+
+The inpute type is "polytope". Note that we do not need a homogenizing
+variable but really specify the points in their actual dimension.
+
+We compute its Hilbert series and Ehrhart polynomial, which are:
 
 Hilbert series: \(H(t)=\frac{1+14t+15t^2}{(1-t)^4}\)
 
@@ -331,31 +349,30 @@ Ehrhart polynomial: \(p(k)=1+4k+8k^2+5k^3\)
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}3}]:} \PY{n}{vertices} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{]}
-        \PY{n}{poly} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzCone}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{polytope}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{vertices}\PY{p}{)}
-        \PY{n}{HB} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertBasis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{poly} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{polytope}\PY{o}{=}\PY{n}{vertices}\PY{p}{)}
+        \PY{n}{HB} \PY{o}{=} \PY{n}{poly}\PY{o}{.}\PY{n}{HilbertBasis}\PY{p}{(}\PY{p}{)}
         \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{HB}\PY{p}{)}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IsDeg1HilbertBasis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertSeries}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)} 
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertQuasiPolynomial}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{poly}\PY{o}{.}\PY{n}{IsDeg1HilbertBasis}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{poly}\PY{o}{.}\PY{n}{HilbertSeries}\PY{p}{(}\PY{p}{)}\PY{p}{)} 
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{poly}\PY{o}{.}\PY{n}{HilbertQuasiPolynomial}\PY{p}{(}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 19
 False
-
-
 [[1, 14, 15], [1, 1, 1, 1], 0]
 [[1, 4, 8, 5], 1]
 
     \end{Verbatim}
 
-    Only interested in the lattice points?
+    If we are only interested in the lattic points, we compute them via the
+command Deg1Elements. Note that the output now has the homogenizing
+variable as last coordinate.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}4}]:} \PY{n}{LP} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Deg1Elements}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{LP}\PY{p}{)}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{LP}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}12}]:} \PY{n}{LP} \PY{o}{=} \PY{n}{poly}\PY{o}{.}\PY{n}{Deg1Elements}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{LP}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{LP}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -369,14 +386,18 @@ polytope}\label{example-3-a-rational-polytope}
 
 \textless{}img src="images/rat\_poly.png" width="290px",style="float:
 right;"\textgreater{} We construct a polytope with vertices
-\((5/2,3/2),(-2/3,-4/3),(1/4,-7/4)\)
+\((5/2,3/2),(-2/3,-4/3),(1/4,-7/4)\).
+
+This is the first time we enter two different and compatible input types
+into the constructor. With the grading we declare the last coordinate to
+be the denominator of the vertices.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}5}]:} \PY{n}{rat\PYZus{}vert} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{]}
-        \PY{n}{grad} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
-        \PY{n}{rat\PYZus{}poly} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzCone}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cone}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{rat\PYZus{}vert}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{grading}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{grad}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{rat\PYZus{}poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertSeries}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{rat\PYZus{}poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertQuasiPolynomial}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{rat\PYZus{}vert} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{5}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{7}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{]}\PY{p}{]}
+        \PY{n}{g} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
+        \PY{n}{rat\PYZus{}poly} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{cone}\PY{o}{=}\PY{n}{rat\PYZus{}vert}\PY{p}{,}\PY{n}{grading}\PY{o}{=}\PY{n}{g}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{rat\PYZus{}poly}\PY{o}{.}\PY{n}{HilbertSeries}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{rat\PYZus{}poly}\PY{o}{.}\PY{n}{HilbertQuasiPolynomial}\PY{p}{(}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -386,13 +407,14 @@ right;"\textgreater{} We construct a polytope with vertices
     \end{Verbatim}
 
     \textless{}img src="images/rat\_poly\_it.png"
-width="290px",style="float: right;"\textgreater{} Compute its integer
-hull:
+width="290px",style="float: right;"\textgreater{} We compute the integer
+hull of this polytope which is again a cone object and thus we can
+access its vertices of support hyperplanes.
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}6}]:} \PY{n}{int\PYZus{}hull} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{rat\PYZus{}poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IntegerHull}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{int\PYZus{}hull}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VerticesOfPolyhedron}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{int\PYZus{}hull}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{SupportHyperplanes}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}13}]:} \PY{n}{int\PYZus{}hull} \PY{o}{=} \PY{n}{rat\PYZus{}poly}\PY{o}{.}\PY{n}{IntegerHull}\PY{p}{(}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{int\PYZus{}hull}\PY{o}{.}\PY{n}{VerticesOfPolyhedron}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+         \PY{n+nb}{print}\PY{p}{(}\PY{n}{int\PYZus{}hull}\PY{o}{.}\PY{n}{SupportHyperplanes}\PY{p}{(}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -413,40 +435,45 @@ right;"\textgreater{}
 -2x_1+2x_2&\leq 3 
 \end{align*}
 
+The input type is "inhom\_inequalities" where a row
+\((a_1,\ldots,a_n,b)\) in the input matrix defines the inequality
+
+\begin{equation*}a_1x_1 +\dots+a_nx_n+b\geq0.\end{equation*}
+
+In this case, HilbertBasis() returns the Hilbert basis of the recession
+cone associated to the polyhedron.
+
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}7}]:} \PY{n}{ineq2} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{]}
-        \PY{n}{polyhedron} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzCone}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{inhom\PYZus{}inequalities}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{ineq2}\PY{p}{)}
-        \PY{n}{HB\PYZus{}rec} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{polyhedron}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{HilbertBasis}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{ineq2} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{]}
+        \PY{n}{polyhedron} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{inhom\PYZus{}inequalities}\PY{o}{=}\PY{n}{ineq2}\PY{p}{)}
+        \PY{n}{HB\PYZus{}rec} \PY{o}{=} \PY{n}{polyhedron}\PY{o}{.}\PY{n}{HilbertBasis}\PY{p}{(}\PY{p}{)}
         \PY{n+nb}{print}\PY{p}{(}\PY{n}{HB\PYZus{}rec}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n}{module\PYZus{}gen} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{polyhedron}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ModuleGenerators}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{module\PYZus{}gen} \PY{o}{=} \PY{n}{polyhedron}\PY{o}{.}\PY{n}{ModuleGenerators}\PY{p}{(}\PY{p}{)}
         \PY{n+nb}{print}\PY{p}{(}\PY{n}{module\PYZus{}gen}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n}{vert\PYZus{}poly} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{polyhedron}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VerticesOfPolyhedron}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{vert\PYZus{}poly} \PY{o}{=} \PY{n}{polyhedron}\PY{o}{.}\PY{n}{VerticesOfPolyhedron}\PY{p}{(}\PY{p}{)}
         \PY{n+nb}{print}\PY{p}{(}\PY{n}{vert\PYZus{}poly}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
 [[1, 0, 0]]
-
-
 [[-1, 0, 1], [0, 1, 1]]
-
-
 [[-4, -1, 2], [0, 3, 2]]
 
     \end{Verbatim}
 
-    ...or by generators \textless{}img
+    We can also define the polyhedron via its generators, i.e. its vertices
+and generators of its recession cone. \textless{}img
 src="images/polyhedron\_int\_hull.png" width="380px",style="float:
 right;"\textgreater{}
 
     \begin{Verbatim}[commandchars=\\\{\}]
-{\color{incolor}In [{\color{incolor}8}]:} \PY{n}{poly2} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzCone}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{vertices}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{n}{vert\PYZus{}poly}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{cone}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+{\color{incolor}In [{\color{incolor}9}]:} \PY{n}{poly2} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{vertices}\PY{o}{=}\PY{n}{vert\PYZus{}poly}\PY{p}{,}\PY{n}{cone}\PY{o}{=}\PY{p}{[}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
         
-        \PY{n}{int\PYZus{}hull2} \PY{o}{=} \PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{poly2}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{IntegerHull}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{int\PYZus{}hull2}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VerticesOfPolyhedron}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
-        \PY{n+nb}{print}\PY{p}{(}\PY{n}{PyNormaliz}\PY{o}{.}\PY{n}{NmzResult}\PY{p}{(}\PY{n}{int\PYZus{}hull2}\PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ExtremeRays}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{)}
+        \PY{n}{int\PYZus{}hull2} \PY{o}{=} \PY{n}{poly2}\PY{o}{.}\PY{n}{IntegerHull}\PY{p}{(}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{int\PYZus{}hull2}\PY{o}{.}\PY{n}{VerticesOfPolyhedron}\PY{p}{(}\PY{p}{)}\PY{p}{)}
+        \PY{n+nb}{print}\PY{p}{(}\PY{n}{int\PYZus{}hull2}\PY{o}{.}\PY{n}{ExtremeRays}\PY{p}{(}\PY{p}{)}\PY{p}{)}
 \end{Verbatim}
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -454,6 +481,10 @@ right;"\textgreater{}
 [[1, 0, 0]]
 
     \end{Verbatim}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor} }]:} 
+\end{Verbatim}
 
 
     % Add a bibliography block to the postdoc
