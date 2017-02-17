@@ -1,26 +1,49 @@
-var a2 = Math.atan2(source.y, source.x);
-var a1 = Math.atan2(compare.y, compare.x);
-var sign = a1 > a2 ? 1 : -1;
-var angle = a1 - a2;
-var K = -sign * Math.PI * 2;
-var angle = (Math.abs(K + angle) < Math.abs(angle))? K + angle : angle;
+// Load Hilbert Basis lookup dictionary.
+var hilbertBases = {}
 
-var jsonCircles = [
-  { "x_axis": 30, "y_axis": 30, "radius": 20, "color" : "green" },
-  { "x_axis": 70, "y_axis": 70, "radius": 20, "color" : "purple"},
-  { "x_axis": 110, "y_axis": 100, "radius": 20, "color" : "red"}];
+$(document).ready(function() {
+    $.getJSON('bases.json', function(data) {
+        console.log('bases loaded');
+        hilbertBases = data;
+        calculate();
+    })
+});
 
-var svgContainer = d3.select("body").append("svg")
-                                    .attr("width", 200)
-                                    .attr("height", 200);
+function drawHilbertBasis(basis) {
+    svgContainer.selectAll("circle.basisCircles").remove();
+    if (basis != undefined) {
+        basis.forEach(function(element) {
+            basisCircles.append("circle")
+                .attr("class", "basisCircles")
+                .attr("r", 4)
+                .attr("fill", "yellow")
+                .attr("fill-opacity", 0.8)
+                .attr("cx", element[0] * scaleFactor)
+                .attr("cy", element[1] * -scaleFactor);
+        });
+    } else {
+        console.log("Error: Basis not loaded")
+    }
+    update();
+}
 
-var circles = svgContainer.selectAll("circle")
-                          .data(jsonCircles)
-                          .enter()
-                          .append("circle");
-
-var circleAttributes = circles
-                       .attr("cx", function (d) { return d.x_axis; })
-                       .attr("cy", function (d) { return d.y_axis; })
-                       .attr("r", function (d) { return d.radius; })
-                       .style("fill", function(d) { return d.color; });
+function calculate() {
+    if (hilbertBases == undefined) {
+        $.getJSON('bases.json', function(data) {
+            console.log('bases loaded');
+            hilbertBases = data;
+        })
+    }
+    var sourceEnc = escape($("#sourceInput").val());
+    var compareEnc = escape($("#compareInput").val());
+    var [sx, sy] = sourceEnc.split('%2C');
+    var [cx, cy] = compareEnc.split('%2C');
+    var vectorCombination = '[' + String(sx) + ', ' + String(sy) + '],[' + String(cx) + ', ' + String(cy) + ']';
+    var output = JSON.stringify(hilbertBases[vectorCombination]);
+    $("#output").html(output);
+    sourceVector.datum().x = sx * scaleFactor;
+    sourceVector.datum().y = -sy * scaleFactor;
+    compareVector.datum().x = cx * scaleFactor;
+    compareVector.datum().y = -cy * scaleFactor;
+    drawHilbertBasis(hilbertBases[vectorCombination]);
+};
