@@ -283,9 +283,7 @@
     
  
 This small tutorial introduces the main syntax of the Python interface
-PyNormaliz for Normaliz.
-
-To install PyNormaliz on your machine, download PyNormaliz and run
+PyNormaliz for Normaliz. To install PyNormaliz on your machine, download PyNormaliz and run
 \begin{Verbatim}
 python setup.py install
 \end{Verbatim}
@@ -293,7 +291,6 @@ or
 \begin{Verbatim}
 pip install .
 \end{Verbatim}
-
 If you are using python3 you might need to enter python3/pip3 instead of
 python/pip.
 
@@ -323,9 +320,7 @@ python/pip.
 
 
 In the cone constructor of PyNormaliz, we specify the input type
-("cone") and an input matrix for this input type.
-
-To compute its Hilbert basis we use the point operator and call
+("cone") and an input matrix for this input type. To compute its Hilbert basis we use the point operator and call
 HilbertBasis() on our cone.
 
     \begin{Verbatim}[commandchars=\\\{\}]
@@ -346,7 +341,7 @@ rays of the new cone are really the generators of the previous one.
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}2}]:} \PY{n}{ineq} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}
         \PY{n}{C2} \PY{o}{=} \PY{n}{Cone}\PY{p}{(}\PY{n}{inequalities}\PY{o}{=}\PY{n}{ineq}\PY{p}{)}
-        \PY{n}{gen2} \PY{o}{=} \PY{n}{cone2}\PY{o}{.}\PY{n}{ExtremeRays}\PY{p}{(}\PY{p}{)}
+        \PY{n}{gen2} \PY{o}{=} \PY{n}{C2}\PY{o}{.}\PY{n}{ExtremeRays}\PY{p}{(}\PY{p}{)}
         \PY{n+nb}{print}\PY{p}{(}\PY{n}{gen}\PY{o}{==}\PY{n}{gen2}\PY{p}{)}
         \PY{n}{HB2} \PY{o}{=} \PY{n}{C2}\PY{o}{.}\PY{n}{HilbertBasis}\PY{p}{(}\PY{p}{)}
         \PY{n+nb}{print}\PY{p}{(}\PY{n}{HB2}\PY{p}{)}
@@ -357,7 +352,7 @@ True
 [[1, 1], [1, 2], [1, 3], [2, 1]]
 
     \end{Verbatim}
-
+\newpage
     \section{A lattice
 polytope}\label{example-2-a-lattice-polytope}
 
@@ -387,16 +382,13 @@ scale = 0.6]
 \end{wrapfigure}
 
 Now we investigate a
-lattice simplex, which is not normal/integrally closed.
+lattice simplex, which is not normal/integrally closed. The input type is "polytope". Note that we do not need a homogenizing variable but really specify the points in their actual dimension.
 
-The inpute type is "polytope". Note that we do not need a homogenizing
-variable but really specify the points in their actual dimension.
-
-We compute its Hilbert series and Ehrhart polynomial, which are:
+We compute its Hilbert series and Hilbert polynomial, which are also sometimes referred to as Ehrhart series and polynomial:
 
 Hilbert series: \(H(t)=\frac{1+14t+15t^2}{(1-t)^4}\)
 
-Ehrhart polynomial: \(p(k)=1+4k+8k^2+5k^3\)
+Hilbert polynomial: \(p(k)=1+4k+8k^2+5k^3\)
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}3}]:} \PY{n}{vertices} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{]}\PY{p}{]}
@@ -416,7 +408,7 @@ False
 
     \end{Verbatim}
 
-    If we are only interested in the lattic points, we compute them via the
+    If you are only interested in the lattice points, you can compute them via the
 command Deg1Elements. Note that the output now has the homogenizing
 variable as last coordinate.
 
@@ -450,6 +442,7 @@ Generators:
 [[0, 0, 0, 1], [0, 0, 5, 1], [0, 3, 0, 1], [2, 0, 0, 1]]
 
 
+
 ExtremeRays:
 [[0, 0, 0, 1], [0, 0, 5, 1], [0, 3, 0, 1], [2, 0, 0, 1]]
 
@@ -475,9 +468,7 @@ polytope}\label{example-3-a-rational-polytope}
 \end{wrapfigure}
 
 We construct a polytope with vertices
-\((5/2,3/2),(-2/3,-4/3),(1/4,-7/4)\).
-
-This is the first time we enter two different and compatible input types
+\((5/2,3/2),(-2/3,-4/3),(1/4,-7/4)\). This is the first time we enter two different input types
 into the constructor. With the grading we declare the last coordinate to
 be the denominator of the vertices.
 
@@ -532,7 +523,7 @@ access its vertices or support hyperplanes.
     [[1, -1, -1]]
     
     \end{Verbatim}
-
+\newpage
     \section{A polyhedron}\label{example-4-a-polyhedron}
 
 \begin{wrapfigure}[7]{R}{0.2\textwidth}
@@ -623,7 +614,7 @@ and generators of its recession cone.
 [[1, 0, 0]]
 
     \end{Verbatim}
-
+\newpage
     \section{Creating new functions}\label{creating-new-functions}
 
 \begin{wrapfigure}[3]{R}{0.2\textwidth}
