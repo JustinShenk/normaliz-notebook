@@ -320,8 +320,8 @@ python/pip.
 
 
 In the cone constructor of PyNormaliz, we specify the input type
-("cone") and an input matrix for this input type. To compute its Hilbert basis we use the point operator and call
-HilbertBasis() on our cone.
+(\texttt{cone}) and an input matrix for this input type. To compute its Hilbert basis we use the point operator and call
+\texttt{HilbertBasis()} on our cone.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}1}]:} \PY{k+kn}{from} \PY{n+nn}{PyNormaliz} \PY{k}{import} \PY{o}{*} \PY{c+c1}{\PYZsh{} or import PyNormaliz}
@@ -352,7 +352,14 @@ True
 [[1, 1], [1, 2], [1, 3], [2, 1]]
 
     \end{Verbatim}
-\newpage
+   The general construction of objects in PyNormaliz follows the same
+   fashion: You can generate a cone via \texttt{Cone} and then specify the
+   usual input type(s) as parameters with the input data as
+   \texttt{type=input\ data}. Once the cone is created, all its possible
+   data is accessible using the \texttt{.} operator, like
+   \texttt{C.HilbertBasis()}. Basically all input types and output data is available. An overview is
+   given in the usual manual.
+   
     \section{A lattice
 polytope}\label{example-2-a-lattice-polytope}
 
@@ -408,9 +415,26 @@ False
 
     \end{Verbatim}
 
-    If you are only interested in the lattice points, you can compute them via the
-command Deg1Elements. Note that the output now has the homogenizing
-variable as last coordinate.
+     The output for the Hilbert series and quasipolynomial has to be read as
+     follows:
+     
+     For the series, the first vector consists of the coefficients of the
+     numerator polynomial, e.g., \texttt{{[}1,14,15{]}} is \(1+14t+15t^2\).
+     The second vector collects the exponents in the denominator. For example
+     \texttt{{[}1,1,1,1{]}} represents \((1-t)(1-t)(1-t)(1-t)=(1-t)^4\) and
+     \texttt{{[}1,2{]}} is \((1-t)(1-t^2)\). The last entry is the possible
+     shift of the Hilbert series.
+     
+     The output of the quasipolynomial usually consists of a list of vectors
+     which show the coefficients of the respective polynomial associated to
+     the congruence class modulo the period of the quasipolynomial. In the
+     above example it is a proper polynomial, so only one vector is listed.
+     The last entry is the greatest common divisor of all denominators in
+     these polynomials.
+     
+     If you are only interested in the lattice points, you can compute them via the
+     command \texttt{Deg1Elements()}. Note that the output now has the
+     homogenizing variable as last coordinate.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}4}]:} \PY{n}{LP} \PY{o}{=} \PY{n}{poly}\PY{o}{.}\PY{n}{Deg1Elements}\PY{p}{(}\PY{p}{)}
@@ -427,11 +451,7 @@ variable as last coordinate.
     \end{Verbatim}
 
     If you would like to have a list of all already computed properties and
-data, you can use the
-\begin{Verbatim}
-print_properties()
-\end{Verbatim}
-function.
+    data, you can use the \texttt{print\_properties()} function.
 
     \begin{Verbatim}[commandchars=\\\{\}]
 {\color{incolor}In [{\color{incolor}12}]:} \PY{n}{poly}\PY{o}{.}\PY{n}{print\PYZus{}properties}\PY{p}{(}\PY{p}{)}
@@ -551,12 +571,12 @@ We define a polyhedron by inequalties:
 -2x_1+2x_2&\leq 3 
 \end{align*}
 
-The input type is "inhom\_inequalities" where a row
+The input type is \texttt{inhom\_inequalities} where a row
 \((a_1,\ldots,a_n,b)\) in the input matrix defines the inequality
 
 \begin{equation*}a_1x_1 +\dots+a_nx_n+b\geq0.\end{equation*}
 
-In this case, HilbertBasis() returns the Hilbert basis of the recession
+In this case, \texttt{HilbertBasis()} returns the Hilbert basis of the recession
 cone associated to the polyhedron.
 
     \begin{Verbatim}[commandchars=\\\{\}]
