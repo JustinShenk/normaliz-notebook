@@ -1,35 +1,19 @@
 // Load Hilbert Basis lookup dictionary.
-console.log("src loaded");
-
 var hilbertBases = {}
-    // $(document).ready(function() { 
-console.log("script loaded");
 
-$.getJSON('bases.json', function(data) {
-    hilbertBases = data;
+$(document).ready(function() {
+    $.getJSON('bases.json', function(data) {
+        console.log('bases loaded');
+        hilbertBases = data;
+        calculate();
+    })
 });
-// });
-
-function calculate() {
-    var sourceEnc = escape($("#sourceInput").val());
-    var compareEnc = escape($("#compareInput").val());
-    var [sx, sy] = sourceEnc.split('%2C');
-    var [cx, cy] = compareEnc.split('%2C');
-    var vectorCombination = '[' + String(sx) + ', ' + String(sy) + '],[' + String(cx) + ', ' + String(cy) + ']';
-    console.log(vectorCombination)
-    var output = JSON.stringify(hilbertBases[vectorCombination]);
-    $("#output").html(output);
-    sourceVector.datum().x = sx * scaleFactor;
-    sourceVector.datum().y = -sy * scaleFactor;
-    compareVector.datum().x = cx * scaleFactor;
-    compareVector.datum().y = -cy * scaleFactor;
-    drawHilbertBasis(hilbertBases[vectorCombination]);
-};
 
 function drawHilbertBasis(basis) {
     console.log(basis);
     update();
     svg.selectAll("circle.basisCircles").remove();
+    svgContainer.selectAll("circle.basisCircles").remove();
     if (basis != undefined) {
         basis.forEach(function(element) {
             basisCircles.append("circle")
@@ -43,5 +27,25 @@ function drawHilbertBasis(basis) {
     } else {
         console.log("Error: Basis not loaded")
     }
-
 }
+
+function calculate() {
+    if (hilbertBases == undefined) {
+        $.getJSON('bases.json', function(data) {
+            console.log('bases loaded');
+            hilbertBases = data;
+        })
+    }
+    var sourceEnc = escape($("#sourceInput").val());
+    var compareEnc = escape($("#compareInput").val());
+    var [sx, sy] = sourceEnc.split('%2C');
+    var [cx, cy] = compareEnc.split('%2C');
+    var vectorCombination = '[' + String(sx) + ', ' + String(sy) + '],[' + String(cx) + ', ' + String(cy) + ']';
+    var output = JSON.stringify(hilbertBases[vectorCombination]);
+    $("#output").html(output);
+    sourceVector.datum().x = sx * scaleFactor;
+    sourceVector.datum().y = -sy * scaleFactor;
+    compareVector.datum().x = cx * scaleFactor;
+    compareVector.datum().y = -cy * scaleFactor;
+    drawHilbertBasis(hilbertBases[vectorCombination]);
+};
