@@ -119,14 +119,12 @@
             calculate();
         });
 
-    var basisCircles = svg.append("g")
-        .attr("class", "basisCircles")        
-        .datum({})
-
     var arc = d3.arc()
         .cornerRadius(4);
 
-    var format = d3.format(".2f")
+    // Difference
+    var differenceArc = svg.append("g")
+        .datum({});
 
     // Origin
     svg.append("line")
@@ -136,6 +134,28 @@
     svg.append("line")
         .attr("x1", -20)
         .attr("x2", width)
+
+    // Source vector
+    var sourceVector = svg.append("g")
+        .attr("class", "source")
+        .datum({
+            x: 40,
+            y: -120
+        });
+
+     // Compare vector
+    var compareVector = svg.append("g")
+        .attr("class", "compare")
+        .datum({
+            x: 120,
+            y: -40
+        });
+
+   var basisCircles = svg.append("g")
+       	.attr("class", "basisCircles")        
+        .datum({})
+
+    var format = d3.format(".2f")
 
     svg.append("circle")
         .attr("r", 4);
@@ -149,22 +169,10 @@
         }
     };
 
-    // Difference
-    var differenceArc = svg.append("g")
-        .datum({});
-
     var differencePath = differenceArc.append("path")
         .attr("class", "difference");
 
     var differenceText = differenceArc.append("text");
-
-    // Source vector
-    var sourceVector = svg.append("g")
-        .attr("class", "source")
-        .datum({
-            x: 40,
-            y: -120
-        });
 
     var sourceHandle = sourceVector.append("g")
         .attr("class", "handle")
@@ -178,14 +186,6 @@
 
     var sourceText = sourceHandle.append("text")
         .attr("dy", -15);
-
-    // Compare vector
-    var compareVector = svg.append("g")
-        .attr("class", "compare")
-        .datum({
-            x: 120,
-            y: -40
-        });
 
     var compareHandle = compareVector.append("g")
         .attr("class", "handle")
@@ -243,12 +243,13 @@
             .endAngle(a2 + angle + Math.PI / 2);
 
         differencePath
-            .style("fill", angle > 0 ? "cyan" : "magenta")
+            .style("fill", angle > 0 ? "lightgrey" : "magenta")
             .attr("d", arc());
+
 
         differenceText
             .attr("transform", "translate(" + arc.centroid() + ")")
-            .text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")
+         <!---   .text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")-->
 
         var apibase = 'http://localhost:8090/normaliz'
         var v1 = [source.x, source.y].join(',')

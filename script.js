@@ -28,6 +28,7 @@ function calculate() {
 
 function drawHilbertBasis(basis) {
     console.log(basis);
+    update();
     svg.selectAll("circle.basisCircles").remove();
     if (basis != undefined) {
         basis.forEach(function(element) {
@@ -35,13 +36,12 @@ function drawHilbertBasis(basis) {
                 .attr("class", "basisCircles")
                 .attr("r", 4)
                 .attr("fill", "yellow")
-                .attr("fill-opacity", 0.8)
+                .attr("fill-opacity", 1.0)
                 .attr("cx", element[0] * scaleFactor)
                 .attr("cy", element[1] * -scaleFactor);
         });
     } else {
         console.log("Error: Basis not loaded")
     }
-    update();
 
 }
