@@ -248,7 +248,7 @@
 
         differenceText
             .attr("transform", "translate(" + arc.centroid() + ")")
-            .text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")
+            <!--.text(Math.abs(Math.round(360 * angle / (Math.PI * 2))) + "º ")-->
 
         var apibase = 'http://localhost:8090/normaliz'
         var v1 = [source.x, source.y].join(',')
