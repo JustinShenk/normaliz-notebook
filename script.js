@@ -13,7 +13,7 @@ function drawHilbertBasis(basis) {
     console.log(basis);
     update();
     svg.selectAll("circle.basisCircles").remove();
-    svgContainer.selectAll("circle.basisCircles").remove();
+    // svgContainer.selectAll("circle.basisCircles").remove();
     if (basis != undefined) {
         basis.forEach(function(element) {
             basisCircles.append("circle")
